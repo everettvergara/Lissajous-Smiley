@@ -13,7 +13,7 @@ In animating a point moving along the perimiter of the circle, we do:
     int y = cy + radius * sin(angle_in_radians);
 ```
 
-In this demo of Lissajous Curves Application, we simply introduced the element of randomness as initial values and parameterized everything to give that "fly" effect. The overall output is amazingly beautiful.
+In Lissajous curves, we simply parameterized everything. We also introduced the element of randomness as initial values to give that "fly" effect. The overall output is amazingly beautiful.
 
 ```c++
     int x = cx + radius_x * cos(angle_in_radians_x);

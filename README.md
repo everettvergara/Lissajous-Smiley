@@ -1,4 +1,4 @@
-# Lissajous-Smiley
+
 A smiley face created using Lissajous Curves and SDL.
 
 Can run at 26 FPS for 10,000,000 lissajous flies on a Macbook Pro 2021 M1 - Single thread.

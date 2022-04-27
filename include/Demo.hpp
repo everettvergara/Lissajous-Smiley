@@ -18,7 +18,7 @@ namespace g80 {
     class Demo : public Video {
 
     public: 
-        Demo (const Dim N, const Dim TAIL = 5) : 
+        Demo (const Dim32 N, const Dim32 TAIL = 5) : 
             N_(N),
             BACKGROUND_N_(N_ * 0.95), 
             FACE_N_((N_ - BACKGROUND_N_) * 0.75),
@@ -33,25 +33,25 @@ namespace g80 {
         auto capture_events() -> bool;
 
     private:
-        const Dim N_;
-        const Dim BACKGROUND_N_ ;
-        const Dim FACE_N_;
-        const Dim SMILE_N_;
-        const Dim EYE1_N_;
-        const Dim EYE2_N_;
-        const Dim TAIL_;
+        const Dim32 N_;
+        const Dim32 BACKGROUND_N_ ;
+        const Dim32 FACE_N_;
+        const Dim32 SMILE_N_;
+        const Dim32 EYE1_N_;
+        const Dim32 EYE2_N_;
+        const Dim32 TAIL_;
 
-        Dim FACE_LOCATION_RADIUS_;
-        Dim SMILE_LOCATION_RADIUS_;
-        Dim EYE_OFFSET_;
-        Dim FLY_RADIUS_;
-        Dim MAX_FLY_INIT_ANGLE{20};
+        Dim32 FACE_LOCATION_RADIUS_;
+        Dim32 SMILE_LOCATION_RADIUS_;
+        Dim32 EYE_OFFSET_;
+        Dim32 FLY_RADIUS_;
+        Dim32 MAX_FLY_INIT_ANGLE{20};
 
         Flies flies_;
         std::array<float, 360> cosf_;
         std::array<float, 360> sinf_;
-        // std::vector<std::array<Dim, 360>> radius_cos_;
-        // std::vector<std::array<Dim, 360>> radius_sin_;
+        // std::vector<std::array<Dim32, 360>> radius_cos_;
+        // std::vector<std::array<Dim32, 360>> radius_sin_;
 
         inline auto rnd() -> Dim32 {
             static std::time_t now = time(&now);
@@ -73,10 +73,10 @@ namespace g80 {
 
     auto Demo::create_window(const VideoConfig &video_config) -> bool {
         if (!Video::create_window(video_config)) return false;
-        FACE_LOCATION_RADIUS_ = {static_cast<Dim>(surface_->h / 2 * 0.70)},
-        SMILE_LOCATION_RADIUS_ = {static_cast<Dim>(surface_->h / 2 * 0.70 * 0.50)},
-        EYE_OFFSET_ = {static_cast<Dim>(SMILE_LOCATION_RADIUS_ * 0.25)},
-        FLY_RADIUS_ = {static_cast<Dim>(FACE_LOCATION_RADIUS_ * 0.11)};
+        FACE_LOCATION_RADIUS_ = {static_cast<Dim32>(surface_->h / 2 * 0.70)},
+        SMILE_LOCATION_RADIUS_ = {static_cast<Dim32>(surface_->h / 2 * 0.70 * 0.50)},
+        EYE_OFFSET_ = {static_cast<Dim32>(SMILE_LOCATION_RADIUS_ * 0.25)},
+        FLY_RADIUS_ = {static_cast<Dim32>(FACE_LOCATION_RADIUS_ * 0.11)};
         return true;
     }
 
@@ -102,10 +102,10 @@ namespace g80 {
         // 
         // radius_cos_.reserve(FLY_RADIUS_ + 1);
         // radius_sin_.reserve(FLY_RADIUS_ + 1);        
-        // for (Dim i = 0; i <= FLY_RADIUS_; ++i) {
-        //     radius_cos_.emplace_back(std::array<Dim, 360>());
-        //     radius_sin_.emplace_back(std::array<Dim, 360>());
-        //     for (Dim j = 0; j < 360; ++j) {
+        // for (Dim32 i = 0; i <= FLY_RADIUS_; ++i) {
+        //     radius_cos_.emplace_back(std::array<Dim32, 360>());
+        //     radius_sin_.emplace_back(std::array<Dim32, 360>());
+        //     for (Dim32 j = 0; j < 360; ++j) {
         //         radius_cos_[i][j] = i * cosf_[j];
         //         radius_sin_[i][j] = i * sinf_[j];
         //     }
@@ -120,7 +120,7 @@ namespace g80 {
     }
 
     auto Demo::init_background() -> bool {
-        for (Dim i = 0; i < BACKGROUND_N_; ++i) {
+        for (Dim32 i = 0; i < BACKGROUND_N_; ++i) {
             flies_.emplace_back(Fly({
                 rnd() % surface_->w,
                 rnd() % surface_->h,
@@ -135,7 +135,7 @@ namespace g80 {
 
     auto Demo::init_face() -> bool {
         float step_on = (FACE_N_ / 360.0f);
-        for (Dim i = 0; i < FACE_N_; ++i) {
+        for (Dim32 i = 0; i < FACE_N_; ++i) {
             flies_.emplace_back(Fly({
                 static_cast<Dim32>(surface_->w / 2 + cosf_[i / step_on] * (FACE_LOCATION_RADIUS_ + rand() % FLY_RADIUS_)),
                 static_cast<Dim32>(surface_->h / 2 + sinf_[i / step_on] * (FACE_LOCATION_RADIUS_ + rand() % FLY_RADIUS_)),
@@ -150,7 +150,7 @@ namespace g80 {
 
     auto Demo::init_smile() -> bool {
         float step_on = (SMILE_N_ / 180.0f);
-        for (Dim i = 0; i < SMILE_N_; ++i) {
+        for (Dim32 i = 0; i < SMILE_N_; ++i) {
             flies_.emplace_back(Fly({
                 static_cast<Dim32>(surface_->w / 2 + cosf_[i/step_on] * (SMILE_LOCATION_RADIUS_ + rand() % FLY_RADIUS_)),
                 static_cast<Dim32>(surface_->h / 2 + sinf_[i/step_on] * (SMILE_LOCATION_RADIUS_ + rand() % FLY_RADIUS_)),
@@ -164,7 +164,7 @@ namespace g80 {
     }
 
     auto Demo::init_eyes() -> bool {
-        for (Dim i = 0; i < EYE1_N_; ++i) {
+        for (Dim32 i = 0; i < EYE1_N_; ++i) {
             flies_.emplace_back(Fly({
                 static_cast<Dim32>(surface_->w / 2 - (EYE_OFFSET_ * 2) + cosf_[0] * (SMILE_LOCATION_RADIUS_ + rand() % FLY_RADIUS_)),
                 static_cast<Dim32>(surface_->h / 2 - (EYE_OFFSET_ * 3) + sinf_[0] * (SMILE_LOCATION_RADIUS_ + rand() % FLY_RADIUS_)),
@@ -175,7 +175,7 @@ namespace g80 {
                 static_cast<Dim16>(1 + rnd() % FLY_RADIUS_)}));
         }
 
-        for (Dim i = 0; i < EYE2_N_; ++i) {
+        for (Dim32 i = 0; i < EYE2_N_; ++i) {
             flies_.emplace_back(Fly({
                 static_cast<Dim32>(surface_->w / 2 + (EYE_OFFSET_ * 2) + cosf_[179] * (SMILE_LOCATION_RADIUS_ + rand() % FLY_RADIUS_)),
                 static_cast<Dim32>(surface_->h / 2 - (EYE_OFFSET_ * 3) + sinf_[179] * (SMILE_LOCATION_RADIUS_ + rand() % FLY_RADIUS_)),
@@ -190,8 +190,8 @@ namespace g80 {
 
     auto Demo::init_fly_tail() -> bool {
         for (auto &fly : flies_) {
-            Dim max_offset_x = (360 / fly.xan) - TAIL_;
-            Dim max_offset_y = (360 / fly.yan) - TAIL_;
+            Dim32 max_offset_x = (360 / fly.xan) - TAIL_;
+            Dim32 max_offset_y = (360 / fly.yan) - TAIL_;
             fly.xa = (rnd() % max_offset_x * fly.xan) + TAIL_ * fly.xan;
             fly.ya = (rnd() % max_offset_y * fly.yan) + TAIL_ * fly.yan;
             fly.xta = fly.xa - TAIL_ * fly.xan;
@@ -226,10 +226,10 @@ namespace g80 {
             // fly.cx + fly.xr * cosf_[fly.xta]; vs. fly.cx + radius_cos_[fly.xr][fly.xta];
             // 
 
-            Dim x = fly.cx + fly.xr * cosf_[fly.xta];
-            Dim y = fly.cy + fly.yr * sinf_[fly.yta];
-            // Dim x = fly.cx + radius_cos_[fly.xr][fly.xta];
-            // Dim y = fly.cy + radius_cos_[fly.yr][fly.yta];
+            Dim32 x = fly.cx + fly.xr * cosf_[fly.xta];
+            Dim32 y = fly.cy + fly.yr * sinf_[fly.yta];
+            // Dim32 x = fly.cx + radius_cos_[fly.xr][fly.xta];
+            // Dim32 y = fly.cy + radius_cos_[fly.yr][fly.yta];
             fly.xta = (fly.xta + fly.xan) % 360;
             fly.yta = (fly.yta + fly.yan) % 360;
             set_pixel(x, y, 0);
@@ -244,10 +244,10 @@ namespace g80 {
             // fly.cx + fly.xr * cosf_[fly.xa]; vs fly.cx + radius_cos_[fly.xr][fly.xa];
             //
 
-            Dim x = fly.cx + fly.xr * cosf_[fly.xa];
-            Dim y = fly.cy + fly.yr * sinf_[fly.ya];
-            // Dim x = fly.cx + radius_cos_[fly.xr][fly.xa];
-            // Dim y = fly.cy + radius_cos_[fly.yr][fly.ya];
+            Dim32 x = fly.cx + fly.xr * cosf_[fly.xa];
+            Dim32 y = fly.cy + fly.yr * sinf_[fly.ya];
+            // Dim32 x = fly.cx + radius_cos_[fly.xr][fly.xa];
+            // Dim32 y = fly.cy + radius_cos_[fly.yr][fly.ya];
             fly.xa = (fly.xa + fly.xan) % 360;
             fly.ya = (fly.ya + fly.yan) % 360;
             set_pixel(x, y, fly.c);

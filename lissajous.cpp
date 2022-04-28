@@ -29,7 +29,7 @@ auto set_default_vconfig() -> VideoConfig;
 auto main(int argc, char *argv[]) -> int {
 
     VideoConfig vconfig {set_default_vconfig()};
-    Demo demo(100000);
+    Demo demo(1000000);
 
     if (!demo.is_init() ||
         !demo.create_window(set_default_vconfig()) ||
